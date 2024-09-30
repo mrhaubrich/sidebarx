@@ -26,6 +26,7 @@ class SidebarX extends StatefulWidget {
     this.footerBuilder,
     this.separatorBuilder,
     this.toggleButtonBuilder,
+    this.itemBuilder,
     this.showToggleButton = true,
     this.headerDivider,
     this.footerDivider,
@@ -59,6 +60,10 @@ class SidebarX extends StatefulWidget {
 
   /// Builder for toggle button at the bottom of the bar
   final SidebarXBuilder? toggleButtonBuilder;
+
+  /// Builder for the items
+  final Widget Function(BuildContext context, SidebarXItem item, bool extended)?
+      itemBuilder;
 
   /// Sidebar showing toggle button if value [true]
   /// not showing if value [false]
@@ -144,6 +149,14 @@ class _SidebarXState extends State<SidebarX>
                   separatorBuilder: widget.separatorBuilder ??
                       (_, __) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
+                    if (widget.itemBuilder != null) {
+                      return widget.itemBuilder!(
+                        context,
+                        widget.items[index],
+                        widget.controller.extended,
+                      );
+                    }
+
                     final item = widget.items[index];
                     return SidebarXCell(
                       item: item,
